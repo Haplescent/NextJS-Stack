@@ -16,8 +16,6 @@ class MyApp extends App {
       Object.assign(pageProps, await Component.getInitialProps(ctx));
     }
 
-    // console.log(pageProps);
-
     return { pageProps };
   }
 
@@ -31,8 +29,6 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-
-    // console.log(pageProps);
 
     return (
       <ThemeProvider theme={theme}>
