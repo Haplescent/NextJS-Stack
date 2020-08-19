@@ -1,35 +1,37 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/static-property-placement */
 /* eslint-disable prettier/prettier */
 import PropTypes from 'prop-types';
-
+import React from 'react';
 import Head from 'next/head';
+import withAuth from '../lib/withAuth';
 
-const Index = ({ user }) => (
-  <div style={{ padding: '10px 45px' }}>
-    <Head>
-      <title>Index page</title>
-      <meta
-        name="description"
-        content="This is the description of the Index page"
-      />
-    </Head>
-    <p>Content on Index page</p>
-    <p>
-      Email:
-      {user.email}
-    </p>
-  </div>
-);
+class Index extends React.Component {
+  static propTypes = {
+    user: PropTypes.shape({
+      displayName: PropTypes.string,
+      email: PropTypes.string.isRequired,
+    }),
+  };
 
-Index.getInitialProps = async ctx => ({ user: ctx.query.user });
+  static defaultProps = {
+    user: null,
+  };
 
-Index.propTypes = {
-  user: PropTypes.shape({
-    email: PropTypes.string.isRequired,
-  }),
-};
+  render() {
+    const { user } = this.props;
+    return (
+      <div style={{ padding: '10px 45px' }}>
+        <Head>
+          <title>Dashboard</title>
+          <meta name="description" content="List of purchased books." />
+        </Head>
+        <p> Dashboard </p>
+        <p>Email: {user.email}</p>
+      </div>
+    );
+  }
+}
 
-Index.defaultProps = {
-  user: null,
-};
-
-export default Index;
+export default withAuth(Index);
