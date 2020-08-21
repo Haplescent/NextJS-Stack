@@ -1,3 +1,4 @@
+/* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/static-property-placement */
@@ -9,13 +10,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Error from 'next/error';
 import Head from 'next/head';
-import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
 
 import { getChapterDetail } from '../../lib/api/public';
 import withAuth from '../../lib/withAuth';
 
-const styleGrid = {
-  flexGrow: '1',
+const styleIcon = {
+  opacity: '0.75',
+  fontSize: '24px',
+  cursor: 'pointer',
 };
 
 class ReadChapter extends React.Component {
@@ -75,12 +78,84 @@ class ReadChapter extends React.Component {
 
     return (
       <div>
-        <h3>Chapter: {chapter.title}</h3>
+        <h2>Chapter: {chapter.title}</h2>
 
         <div
           className="main-content"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+      </div>
+    );
+  }
+
+  renderSections() {
+    const { sections } = this.state.chapter;
+
+    if (!sections || !sections.length === 0) {
+      return null;
+    }
+
+    return (
+      <ul>
+        {sections.map(s => (
+          <li key={s.escapedText} style={{ paddingTop: '10px' }}>
+            <a href={`#${s.escapedText}`}>{s.text}</a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  renderSidebar() {
+    const { chapter } = this.state;
+
+    const { book } = chapter;
+    const { chapters } = book;
+
+    return (
+      <div
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          bottom: 0,
+          top: '64px',
+          left: 0,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          width: '400px',
+          padding: '0px 25px',
+        }}
+      >
+        <p style={{ padding: '0px 40px', fontSize: '17px', fontWeight: '400' }}>
+          {book.name}
+        </p>
+        <ol
+          start="0"
+          style={{ padding: '0 25', fontSize: '14px', fontWeight: '300' }}
+        >
+          {chapters.map((ch, i) => (
+            <li
+              key={ch._id}
+              role="presentation"
+              style={{
+                listStyle: i === 0 ? 'none' : 'decimal',
+                paddingBottom: '10px',
+              }}
+            >
+              <Link
+                as={`/books/${book.slug}/${ch.slug}`}
+                href={`/public/read-chapter?bookSlug=${book.slug}&chapterSlug=${ch.slug}`}
+              >
+                <a
+                  style={{ color: chapter._id === ch._id ? '#1565C0' : '#222' }}
+                >
+                  {ch.title}
+                </a>
+              </Link>
+              {chapter._id === ch._id ? this.renderSections() : null}
+            </li>
+          ))}
+        </ol>
       </div>
     );
   }
@@ -92,10 +167,8 @@ class ReadChapter extends React.Component {
       return <Error statusCode={404} />;
     }
 
-    const { book } = chapter;
-
     return (
-      <div style={{ padding: '10px 45px' }}>
+      <div>
         <Head>
           <title>
             {chapter.title === 'Introduction'
@@ -107,27 +180,39 @@ class ReadChapter extends React.Component {
           ) : null}
         </Head>
 
-        <Grid
-          style={styleGrid}
-          container
-          direction="row"
-          justify="space-around"
-          align="flex-start"
-        >
-          <Grid
-            item
-            sm={10}
-            xs={12}
-            style={{
-              textAlign: 'left',
-              paddingLeft: '25px',
-            }}
-          >
-            <h2>Book: {book.name}</h2>
+        {this.renderSidebar()}
 
-            {this.renderMainContent()}
-          </Grid>
-        </Grid>
+        <div
+          style={{
+            textAlign: 'left',
+            padding: '0px 10px 20px 30px',
+            position: 'fixed',
+            right: 0,
+            bottom: 0,
+            top: '64px',
+            left: '400px',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+          }}
+          id="main-content"
+        >
+          {this.renderMainContent()}
+        </div>
+
+        <div
+          style={{
+            position: 'fixed',
+            top: '80px',
+            left: '15px',
+          }}
+        >
+          <i // eslint-disable-line
+            className="material-icons"
+            style={styleIcon}
+          >
+            format_list_bulleted
+          </i>
+        </div>
       </div>
     );
   }
