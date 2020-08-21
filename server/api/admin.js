@@ -1,3 +1,4 @@
+/* eslint-disable prefer-object-spread */
 /* eslint-disable prettier/prettier */
 const express = require('express');
 const Book = require('../models/Book');
@@ -14,6 +15,19 @@ router.use((req, res, next) => {
   }
 
   next();
+});
+
+// not in the book
+router.post('/books/add', async (req, res) => {
+  try {
+    const book = await Book.add(
+      Object.assign({ userId: req.user.id }, req.body)
+    );
+    res.json(book);
+  } catch (err) {
+    logger.error(err);
+    res.json({ error: err.message || err.toString() });
+  }
 });
 
 router.get('/books', async (req, res) => {

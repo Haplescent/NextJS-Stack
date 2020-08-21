@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoSessionStore = require('connect-mongo');
 const { insertTemplates } = require('./models/EmailTemplate');
+const { setupGithub } = require('./github');
 const logger = require('./logs');
 const routesWithSlug = require('./routesWithSlug');
 
@@ -57,19 +58,15 @@ app.prepare().then(async () => {
       maxAge: 14 * 24 * 60 * 60 * 1000,
     },
   };
-
+  server.use(express.json());
   server.use(session(sess));
 
   await insertTemplates();
 
   auth({ server, ROOT_URL });
+  setupGithub({ server });
   api(server);
   routesWithSlug({ server, app });
-
-  server.get('/books/:bookSlug/:chapterSlug', (req, res) => {
-    const { bookSlug, chapterSlug } = req.params;
-    app.render(req, res, '/public/read-chapter', { bookSlug, chapterSlug });
-  });
 
   server.get('*', (req, res) => {
     const url = URL_MAP[req.path];

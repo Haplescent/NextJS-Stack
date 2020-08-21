@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import Router from 'next/router';
