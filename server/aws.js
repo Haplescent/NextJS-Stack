@@ -35,7 +35,7 @@ function sendEmail(options) {
         } else {
           resolve(info);
         }
-      },
+      }
     );
   });
 }

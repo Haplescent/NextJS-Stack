@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable prettier/prettier */
 const express = require('express');
 const next = require('next');
@@ -9,7 +10,15 @@ const logger = require('./logs');
 
 const auth = require('./google');
 
+const Chapter = require('./models/Chapter');
+
 require('dotenv').config();
+
+const api = require('./api');
+
+const URL_MAP = {
+  '/login': '/public/login',
+};
 
 const dev = process.env.NODE_ENV !== 'production';
 const MONGO_URL = process.env.MONGO_URL_TEST;
@@ -54,8 +63,20 @@ app.prepare().then(async () => {
   await insertTemplates();
 
   auth({ server, ROOT_URL });
+  api(server);
 
-  server.get('*', (req, res) => handle(req, res));
+  server.get('*', (req, res) => {
+    const url = URL_MAP[req.path];
+    if (url) {
+      app.render(req, res, url);
+    } else {
+      handle(req, res);
+    }
+  });
+
+  Chapter.create({ bookId: '59f3c240a1ab6e39c4b4d10d' }).catch(err => {
+    logger.info(err);
+  });
 
   server.listen(port, err => {
     if (err) throw err;
