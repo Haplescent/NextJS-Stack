@@ -10,7 +10,7 @@ const logger = require('./logs');
 
 const auth = require('./google');
 
-const Chapter = require('./models/Chapter');
+// const Chapter = require('./models/Chapter');
 
 require('dotenv').config();
 
@@ -65,6 +65,11 @@ app.prepare().then(async () => {
   auth({ server, ROOT_URL });
   api(server);
 
+  server.get('/books/:bookSlug/:chapterSlug', (req, res) => {
+    const { bookSlug, chapterSlug } = req.params;
+    app.render(req, res, '/public/read-chapter', { bookSlug, chapterSlug });
+  });
+
   server.get('*', (req, res) => {
     const url = URL_MAP[req.path];
     if (url) {
@@ -74,9 +79,9 @@ app.prepare().then(async () => {
     }
   });
 
-  Chapter.create({ bookId: '59f3c240a1ab6e39c4b4d10d' }).catch(err => {
-    logger.info(err);
-  });
+  // Chapter.create({ bookId: '59f3c240a1ab6e39c4b4d10d' }).catch(err => {
+  //   logger.info(err);
+  // });
 
   server.listen(port, err => {
     if (err) throw err;
