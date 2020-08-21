@@ -7,10 +7,9 @@ const session = require('express-session');
 const mongoSessionStore = require('connect-mongo');
 const { insertTemplates } = require('./models/EmailTemplate');
 const logger = require('./logs');
+const routesWithSlug = require('./routesWithSlug');
 
 const auth = require('./google');
-
-// const Chapter = require('./models/Chapter');
 
 require('dotenv').config();
 
@@ -18,6 +17,7 @@ const api = require('./api');
 
 const URL_MAP = {
   '/login': '/public/login',
+  '/my-books': '/customer/my-books',
 };
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -64,6 +64,7 @@ app.prepare().then(async () => {
 
   auth({ server, ROOT_URL });
   api(server);
+  routesWithSlug({ server, app });
 
   server.get('/books/:bookSlug/:chapterSlug', (req, res) => {
     const { bookSlug, chapterSlug } = req.params;
@@ -78,10 +79,6 @@ app.prepare().then(async () => {
       handle(req, res);
     }
   });
-
-  // Chapter.create({ bookId: '59f3c240a1ab6e39c4b4d10d' }).catch(err => {
-  //   logger.info(err);
-  // });
 
   server.listen(port, err => {
     if (err) throw err;
