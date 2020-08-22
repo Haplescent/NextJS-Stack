@@ -50,6 +50,7 @@ class ReadChapter extends React.Component {
       chapter,
       htmlContent,
       hideHeader: false,
+      isMobile: false,
     };
   }
 
@@ -57,12 +58,19 @@ class ReadChapter extends React.Component {
     document
       .getElementById('main-content')
       .addEventListener('scroll', this.onScroll);
+
+    const isMobile = window.innerWidth < 768;
+
+    if (this.state.isMobile !== isMobile) {
+      this.setState({ isMobile }); // eslint-disable-line
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     const { chapter } = nextProps;
 
     if (chapter && chapter._id !== this.props.chapter._id) {
+      document.getElementById('chapter-content').scrollIntoView();
       const { htmlContent } = chapter;
       this.setState({ chapter, htmlContent });
     }
@@ -147,15 +155,29 @@ class ReadChapter extends React.Component {
     this.setState({ showTOC: !this.state.showTOC });
   };
 
+  closeTocWhenMobile = () => {
+    this.setState({ showTOC: !this.state.isMobile });
+  };
+
   renderMainContent() {
-    const { chapter, htmlContent } = this.state;
+    const { chapter, htmlContent, showTOC, isMobile } = this.state;
+
+    let padding = '20px 20%';
+
+    if (!isMobile && showTOC) {
+      padding = '20px 10%';
+    } else if (isMobile) {
+      padding = '0px 10px';
+    }
 
     return (
-      <div>
-        <h2>Chapter: {chapter.title}</h2>
-
+      <div style={{ padding }} id="chapter-content">
+        <h2 style={{ fontWeight: '400', lineHeight: '1.5em' }}>
+          {chapter.order > 1 ? `Chapter ${chapter.order - 1}: ` : null}
+          {chapter.title}
+        </h2>
         <div
-          className="main-content"
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </div>
@@ -176,13 +198,14 @@ class ReadChapter extends React.Component {
         {sections.map(s => (
           <li key={s.escapedText} style={{ paddingTop: '10px' }}>
             <a
-              href={`#${s.escapedText}`}
               style={{
                 color:
                   activeSection && activeSection.hash === s.escapedText
                     ? '#1565C0'
                     : '#222',
               }}
+              href={`#${s.escapedText}`}
+              onClick={this.closeTocWhenMobile}
             >
               {s.text}
             </a>
@@ -193,7 +216,7 @@ class ReadChapter extends React.Component {
   }
 
   renderSidebar() {
-    const { showTOC, chapter, hideHeader } = this.state;
+    const { showTOC, chapter, hideHeader, isMobile } = this.state;
     const { book } = chapter;
     const { chapters } = book;
 
@@ -208,10 +231,11 @@ class ReadChapter extends React.Component {
           position: 'absolute',
           bottom: 0,
           top: hideHeader ? 0 : '64px',
+          transition: 'top 0.5s ease-in',
           left: 0,
           overflowY: 'auto',
           overflowX: 'hidden',
-          width: '400px',
+          width: isMobile ? '100%' : '400px',
           padding: '0px 25px',
         }}
       >
@@ -235,8 +259,9 @@ class ReadChapter extends React.Component {
                 as={`/books/${book.slug}/${ch.slug}`}
                 href={`/public/read-chapter?bookSlug=${book.slug}&chapterSlug=${ch.slug}`}
               >
-                <a
+                <a // eslint-disable-line
                   style={{ color: chapter._id === ch._id ? '#1565C0' : '#222' }}
+                  onClick={this.closeTocWhenMobile}
                 >
                   {ch.title}
                 </a>
@@ -252,7 +277,12 @@ class ReadChapter extends React.Component {
   render() {
     const { user } = this.props;
 
-    const { chapter, showTOC, hideHeader } = this.state;
+    const { chapter, showTOC, hideHeader, isMobile } = this.state;
+
+    let left = '20px';
+    if (showTOC) {
+      left = isMobile ? '100%' : '400px';
+    }
 
     if (!chapter) {
       return <Error statusCode={404} />;
@@ -284,7 +314,7 @@ class ReadChapter extends React.Component {
             bottom: 0,
             top: hideHeader ? 0 : '64px',
             transition: 'top 0.5s ease-in',
-            left: '400px',
+            left,
             overflowY: 'auto',
             overflowX: 'hidden',
           }}
