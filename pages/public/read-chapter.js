@@ -18,6 +18,8 @@ import Header from '../../components/Header';
 import { getChapterDetail } from '../../lib/api/public';
 import withAuth from '../../lib/withAuth';
 
+import BuyButton from '../../components/customer/BuyButton';
+
 const styleIcon = {
   opacity: '0.75',
   fontSize: '24px',
@@ -41,8 +43,10 @@ class ReadChapter extends React.Component {
     const { chapter } = props;
 
     let htmlContent = '';
-    if (chapter) {
+    if (chapter && (chapter.isPurchased || chapter.isFree)) {
       htmlContent = chapter.htmlContent;
+    } else {
+      htmlContent = chapter.htmlExcerpt;
     }
 
     this.state = {
@@ -160,10 +164,13 @@ class ReadChapter extends React.Component {
   };
 
   renderMainContent() {
+    const { user } = this.props;
+
     const { chapter, htmlContent, showTOC, isMobile } = this.state;
 
-    let padding = '20px 20%';
+    const { book } = chapter;
 
+    let padding = '20px 20%';
     if (!isMobile && showTOC) {
       padding = '20px 10%';
     } else if (isMobile) {
@@ -180,6 +187,9 @@ class ReadChapter extends React.Component {
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+        {!chapter.isPurchased && !chapter.isFree ? (
+          <BuyButton user={user} book={book} />
+        ) : null}
       </div>
     );
   }

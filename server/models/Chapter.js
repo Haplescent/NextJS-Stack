@@ -9,6 +9,8 @@ const hljs = require('highlight.js');
 // const Book = require('./Book');
 const generateSlug = require('../utils/slugify');
 
+const Purchase = require('./Purchase');
+
 function markdownToHtml(content) {
   const renderer = new marked.Renderer();
 
@@ -163,7 +165,7 @@ const mongoSchema = new Schema({
 });
 
 class ChapterClass {
-  static async getBySlug({ bookSlug, chapterSlug, userId }) {
+  static async getBySlug({ bookSlug, chapterSlug, userId, isAdmin }) {
     const book = await Book.getBySlug({ slug: bookSlug, userId });
     if (!book) {
       throw new Error('Book not found');
@@ -177,6 +179,18 @@ class ChapterClass {
 
     const chapterObj = chapter.toObject();
     chapterObj.book = book;
+
+    if (userId) {
+      const purchase = await Purchase.findOne({ userId, bookId: book._id });
+
+      chapterObj.isPurchased = !!purchase || isAdmin;
+    }
+
+    const isFreeOrPurchased = chapter.isFree || chapterObj.isPurchased;
+
+    if (!isFreeOrPurchased) {
+      delete chapterObj.htmlContent;
+    }
 
     return chapterObj;
   }
@@ -200,9 +214,11 @@ class ChapterClass {
     let order;
 
     if (path === 'introduction.md') {
+      console.log('adding intro');
       order = 1;
     } else {
       order = parseInt(path.match(/[0-9]+/), 10) + 1;
+      console.log('adding chapter info');
     }
 
     const content = body;

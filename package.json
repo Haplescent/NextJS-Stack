@@ -1,5 +1,5 @@
 {
-  "name": "7-begin",
+  "name": "8-begin",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -17,6 +17,7 @@
     "@material-ui/styles": "4.7.1",
     "@octokit/rest": "16.35.2",
     "aws-sdk": "2.595.0",
+    "compression": "1.7.4",
     "connect-mongo": "3.2.0",
     "dotenv": "8.2.0",
     "email-addresses": "3.1.0",
@@ -26,8 +27,10 @@
     "googleapis": "46.0.0",
     "handlebars": "4.5.3",
     "he": "1.2.0",
+    "helmet": "3.21.2",
     "highlight.js": "9.17.1",
-    "isomorphic-unfetch": "3.0.0",
+    "htmlescape": "1.1.1",
+    "isomorphic-unfetch": "^3.0.0",
     "lodash": "4.17.15",
     "marked": "0.8.0",
     "mongoose": "5.8.2",
@@ -39,7 +42,10 @@
     "qs": "6.9.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
+    "react-stripe-checkout": "2.6.3",
     "request": "2.88.0",
+    "sitemap": "5.1.0",
+    "stripe": "7.14.0",
     "winston": "3.2.1"
   },
   "devDependencies": {
