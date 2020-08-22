@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import Error from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
+import throttle from 'lodash/throttle';
 
 import { getChapterDetail } from '../../lib/api/public';
 import withAuth from '../../lib/withAuth';
@@ -48,6 +49,12 @@ class ReadChapter extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document
+      .getElementById('main-content')
+      .addEventListener('scroll', this.onScroll);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { chapter } = nextProps;
 
@@ -56,6 +63,28 @@ class ReadChapter extends React.Component {
       this.setState({ chapter, htmlContent });
     }
   }
+
+  componentWillUnmount() {
+    document
+      .getElementById('main-content')
+      .removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll = throttle(() => {
+    const sectionElms = document.querySelectorAll('span.section-anchor');
+
+    let activeSection;
+
+    for (let i = 0; i < sectionElms.length; i += 1) {
+      const s = sectionElms[i];
+
+      activeSection = {
+        hash: s.attributes.getNamedItem('name').value,
+      };
+    }
+
+    this.setState({ activeSection });
+  }, 500);
 
   static async getInitialProps({ req, query }) {
     const { bookSlug, chapterSlug } = query;
@@ -75,6 +104,8 @@ class ReadChapter extends React.Component {
 
   renderMainContent() {
     const { chapter, htmlContent } = this.state;
+    console.log(chapter);
+    console.log(htmlContent);
 
     return (
       <div>
@@ -90,6 +121,9 @@ class ReadChapter extends React.Component {
 
   renderSections() {
     const { sections } = this.state.chapter;
+    console.log(sections);
+    const { activeSection } = this.state;
+    console.log(activeSection);
 
     if (!sections || !sections.length === 0) {
       return null;
@@ -99,7 +133,17 @@ class ReadChapter extends React.Component {
       <ul>
         {sections.map(s => (
           <li key={s.escapedText} style={{ paddingTop: '10px' }}>
-            <a href={`#${s.escapedText}`}>{s.text}</a>
+            <a
+              href={`#${s.escapedText}`}
+              style={{
+                color:
+                  activeSection && activeSection.hash === s.escapedText
+                    ? '#1565C0'
+                    : '#222',
+              }}
+            >
+              {s.text}
+            </a>
           </li>
         ))}
       </ul>
@@ -168,7 +212,7 @@ class ReadChapter extends React.Component {
     }
 
     return (
-      <div>
+      <div id="main-content">
         <Head>
           <title>
             {chapter.title === 'Introduction'

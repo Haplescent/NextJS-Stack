@@ -147,6 +147,10 @@ const mongoSchema = new Schema({
     type: Number,
     required: true,
   },
+  // not in book
+  sections: {
+    type: Array,
+  },
   seoTitle: String,
   seoDescription: String,
 });
@@ -198,6 +202,7 @@ class ChapterClass {
     const htmlContent = markdownToHtml(content);
     const htmlExcerpt = markdownToHtml(excerpt);
     const sections = getSections(content);
+    console.log(sections);
 
     if (!chapter) {
       const slug = await generateSlug(this, title, { bookId: book._id });
