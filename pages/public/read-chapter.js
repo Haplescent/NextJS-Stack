@@ -202,7 +202,6 @@ class ReadChapter extends React.Component {
   renderSections() {
     const { sections } = this.state.chapter;
     const { activeSection } = this.state;
-    console.log(activeSection);
 
     if (!sections || !sections.length === 0) {
       return null;
