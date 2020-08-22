@@ -143,6 +143,10 @@ class ReadChapter extends React.Component {
     }
   };
 
+  toggleChapterList = () => {
+    this.setState({ showTOC: !this.state.showTOC });
+  };
+
   renderMainContent() {
     const { chapter, htmlContent } = this.state;
 
@@ -192,6 +196,10 @@ class ReadChapter extends React.Component {
     const { showTOC, chapter, hideHeader } = this.state;
     const { book } = chapter;
     const { chapters } = book;
+
+    if (!showTOC) {
+      return null;
+    }
 
     return (
       <div
