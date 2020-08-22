@@ -13,6 +13,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import isEqual from 'lodash/isEqual';
+import Header from '../../components/Header';
 
 import { getChapterDetail } from '../../lib/api/public';
 import withAuth from '../../lib/withAuth';
@@ -45,8 +46,10 @@ class ReadChapter extends React.Component {
     }
 
     this.state = {
+      showTOC: false,
       chapter,
       htmlContent,
+      hideHeader: false,
     };
   }
 
@@ -65,45 +68,6 @@ class ReadChapter extends React.Component {
     }
   }
 
-  onScroll = throttle(() => {
-    const sectionElms = document.querySelectorAll('span.section-anchor');
-    let activeSection;
-
-    let sectionAbove;
-    for (let i = 0; i < sectionElms.length; i += 1) {
-      const s = sectionElms[i];
-      const b = s.getBoundingClientRect();
-      const anchorBottom = b.bottom;
-
-      if (anchorBottom >= 0 && anchorBottom <= window.innerHeight) {
-        activeSection = {
-          hash: s.attributes.getNamedItem('name').value,
-        };
-
-        break;
-      }
-
-      if (anchorBottom > window.innerHeight && i > 0) {
-        if (sectionAbove.bottom <= 0) {
-          activeSection = {
-            hash: sectionElms[i - 1].attributes.getNamedItem('name').value,
-          };
-          break;
-        }
-      } else if (i + 1 === sectionElms.length) {
-        activeSection = {
-          hash: s.attributes.getNamedItem('name').value,
-        };
-      }
-
-      sectionAbove = b;
-    }
-
-    if (!isEqual(this.state.activeSection, activeSection)) {
-      this.setState({ activeSection });
-    }
-  }, 500);
-
   static async getInitialProps({ req, query }) {
     const { bookSlug, chapterSlug } = query;
 
@@ -120,11 +84,64 @@ class ReadChapter extends React.Component {
     return { chapter };
   }
 
+  onScroll = throttle(() => {
+    this.onScrollActiveSection();
+    this.onScrollHideHeader();
+  }, 500);
+
   componentWillUnmount() {
     document
       .getElementById('main-content')
       .removeEventListener('scroll', this.onScroll);
   }
+
+  onScrollHideHeader = () => {
+    const distanceFromTop = document.getElementById('main-content').scrollTop;
+    const hideHeader = distanceFromTop > 500;
+
+    if (this.state.hideHeader !== hideHeader) {
+      this.setState({ hideHeader });
+    }
+  };
+
+  onScrollActiveSection = () => {
+    const sectionElms = document.querySelectorAll('span.section-anchor');
+    let activeSection;
+
+    let aboveSection;
+    for (let i = 0; i < sectionElms.length; i += 1) {
+      const s = sectionElms[i];
+      const b = s.getBoundingClientRect();
+      const anchorBottom = b.bottom;
+
+      if (anchorBottom >= 0 && anchorBottom <= window.innerHeight) {
+        activeSection = {
+          hash: s.attributes.getNamedItem('name').value,
+        };
+
+        break;
+      }
+
+      if (anchorBottom > window.innerHeight && i > 0) {
+        if (aboveSection.bottom <= 0) {
+          activeSection = {
+            hash: sectionElms[i - 1].attributes.getNamedItem('name').value,
+          };
+          break;
+        }
+      } else if (i + 1 === sectionElms.length) {
+        activeSection = {
+          hash: s.attributes.getNamedItem('name').value,
+        };
+      }
+
+      aboveSection = b;
+    }
+
+    if (!isEqual(this.state.activeSection, activeSection)) {
+      this.setState({ activeSection });
+    }
+  };
 
   renderMainContent() {
     const { chapter, htmlContent } = this.state;
@@ -172,7 +189,7 @@ class ReadChapter extends React.Component {
   }
 
   renderSidebar() {
-    const { chapter } = this.state;
+    const { showTOC, chapter, hideHeader } = this.state;
     const { book } = chapter;
     const { chapters } = book;
 
@@ -182,7 +199,7 @@ class ReadChapter extends React.Component {
           textAlign: 'left',
           position: 'absolute',
           bottom: 0,
-          top: '64px',
+          top: hideHeader ? 0 : '64px',
           left: 0,
           overflowY: 'auto',
           overflowX: 'hidden',
@@ -225,7 +242,9 @@ class ReadChapter extends React.Component {
   }
 
   render() {
-    const { chapter } = this.state;
+    const { user } = this.props;
+
+    const { chapter, showTOC, hideHeader } = this.state;
 
     if (!chapter) {
       return <Error statusCode={404} />;
@@ -244,6 +263,8 @@ class ReadChapter extends React.Component {
           ) : null}
         </Head>
 
+        <Header user={user} hideHeader={hideHeader} />
+
         {this.renderSidebar()}
 
         <div
@@ -253,7 +274,8 @@ class ReadChapter extends React.Component {
             position: 'fixed',
             right: 0,
             bottom: 0,
-            top: '64px',
+            top: hideHeader ? 0 : '64px',
+            transition: 'top 0.5s ease-in',
             left: '400px',
             overflowY: 'auto',
             overflowX: 'hidden',
@@ -266,13 +288,17 @@ class ReadChapter extends React.Component {
         <div
           style={{
             position: 'fixed',
-            top: '80px',
+            top: hideHeader ? '20px' : '80px',
+            transition: 'top 0.5s ease-in',
             left: '15px',
           }}
         >
-          <i // eslint-disable-line
+          <i //eslint-disable-line
             className="material-icons"
             style={styleIcon}
+            onClick={this.toggleChapterList}
+            onKeyPress={this.toggleChapterList}
+            role="button"
           >
             format_list_bulleted
           </i>
