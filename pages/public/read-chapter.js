@@ -75,7 +75,12 @@ class ReadChapter extends React.Component {
 
     if (chapter && chapter._id !== this.props.chapter._id) {
       document.getElementById('chapter-content').scrollIntoView();
-      const { htmlContent } = chapter;
+      let htmlContent = '';
+      if (chapter && (chapter.isPurchased || chapter.isFree)) {
+        htmlContent = chapter.htmlContent;
+      } else {
+        htmlContent = chapter.htmlExcerpt;
+      }
       this.setState({ chapter, htmlContent });
     }
   }
