@@ -32,17 +32,17 @@ function markdownToHtml(content) {
 
     if (level === 2) {
       return `<h${level} class="chapter-section" style="color: #222; font-weight: 400;">
-        <a
-          name="${escapedText}"
-          href="#${escapedText}"
-          style="color: #222;"
-        > 
-          <i class="material-icons" style="vertical-align: middle; opacity: 0.5; cursor: pointer;">link</i>
-        </a>
-        <span class="section-anchor" name="${escapedText}">
-          ${text}
-        </span>
-      </h${level}>`;
+    <a
+      name="${escapedText}"
+      href="#${escapedText}"
+      style="color: #222;"
+    > 
+      <i class="material-icons" style="vertical-align: middle; opacity: 0.5; cursor: pointer;">link</i>
+    </a>
+    <span class="section-anchor" name="${escapedText}">
+      ${text}
+    </span>
+  </h${level}>`;
     }
 
     if (level === 4) {
@@ -114,9 +114,6 @@ const mongoSchema = new Schema({
     required: true,
     default: false,
   },
-  githubFilePath: {
-    type: String,
-  },
   title: {
     type: String,
     required: true,
@@ -124,10 +121,6 @@ const mongoSchema = new Schema({
   slug: {
     type: String,
     required: true,
-  },
-  excerpt: {
-    type: String,
-    default: '',
   },
   content: {
     type: String,
@@ -139,20 +132,34 @@ const mongoSchema = new Schema({
     default: '',
     required: true,
   },
+  excerpt: {
+    type: String,
+    default: '',
+  },
+  htmlExcerpt: {
+    type: String,
+    default: '',
+  },
   createdAt: {
     type: Date,
     required: true,
+  },
+  githubFilePath: {
+    type: String,
   },
   order: {
     type: Number,
     required: true,
   },
-  // not in book
-  sections: {
-    type: Array,
-  },
   seoTitle: String,
   seoDescription: String,
+  sections: [
+    {
+      text: String,
+      level: Number,
+      escapedText: String,
+    },
+  ],
 });
 
 class ChapterClass {

@@ -64,16 +64,11 @@ class ReadChapter extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    document
-      .getElementById('main-content')
-      .removeEventListener('scroll', this.onScroll);
-  }
-
   onScroll = throttle(() => {
-    const sectionElms = document.querySelectorAll('span.section-anchor');
 
+    const sectionElms = document.querySelectorAll('span.section-anchor');
     let activeSection;
+
 
     for (let i = 0; i < sectionElms.length; i += 1) {
       const s = sectionElms[i];
@@ -102,10 +97,14 @@ class ReadChapter extends React.Component {
     return { chapter };
   }
 
+  componentWillUnmount() {
+    document
+      .getElementById('main-content')
+      .removeEventListener('scroll', this.onScroll);
+  }
+
   renderMainContent() {
     const { chapter, htmlContent } = this.state;
-    console.log(chapter);
-    console.log(htmlContent);
 
     return (
       <div>
@@ -121,7 +120,6 @@ class ReadChapter extends React.Component {
 
   renderSections() {
     const { sections } = this.state.chapter;
-    console.log(sections);
     const { activeSection } = this.state;
     console.log(activeSection);
 
@@ -152,7 +150,6 @@ class ReadChapter extends React.Component {
 
   renderSidebar() {
     const { chapter } = this.state;
-
     const { book } = chapter;
     const { chapters } = book;
 
@@ -212,7 +209,7 @@ class ReadChapter extends React.Component {
     }
 
     return (
-      <div id="main-content">
+      <div>
         <Head>
           <title>
             {chapter.title === 'Introduction'
