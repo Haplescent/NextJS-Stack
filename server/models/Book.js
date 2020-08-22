@@ -7,11 +7,11 @@ const generateSlug = require('../utils/slugify');
 // const Chapter = require('./Chapter');
 const Purchase = require('./Purchase');
 // const User = require('./User');
-// const getEmailTemplate = require('./EmailTemplate');
+const getEmailTemplate = require('./EmailTemplate');
 
 // const getRootUrl = require('../../lib/api/getRootUrl');
 const { stripeCharge } = require('../stripe');
-// const sendEmail = require('../aws');
+const sendEmail = require('../aws');
 // const { addToMailchimp } = require('../mailchimp');
 const { getCommits, getContent } = require('../github');
 
@@ -204,16 +204,16 @@ class BookClass {
     //   bookUrl: `${ROOT_URL}/books/${book.slug}/introduction`,
     // });
 
-    // try {
-    //   await sendEmail({
-    //     from: `Kelly from builderbook.org <${process.env.EMAIL_SUPPORT_FROM_ADDRESS}>`,
-    //     to: [user.email],
-    //     subject: template.subject,
-    //     body: template.message,
-    //   });
-    // } catch (error) {
-    //   logger.error('Email sending error:', error);
-    // }
+    try {
+      await sendEmail({
+        from: `John from The John Merritt app <${process.env.EMAIL_SUPPORT_FROM_ADDRESS}>`,
+        to: [user.email],
+        subject: template.subject,
+        body: template.message,
+      });
+    } catch (error) {
+      logger.error('Email sending error:', error);
+    }
 
     return Purchase.create({
       userId: user._id,
