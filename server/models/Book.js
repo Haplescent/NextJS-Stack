@@ -6,7 +6,7 @@ const frontmatter = require('front-matter');
 const generateSlug = require('../utils/slugify');
 // const Chapter = require('./Chapter');
 const Purchase = require('./Purchase');
-// const User = require('./User');
+const User = require('./User');
 const { getEmailTemplate } = require('./EmailTemplate');
 
 const getRootUrl = require('../../lib/api/getRootUrl');
@@ -66,7 +66,7 @@ class BookClass {
 
     book.chapters = (
       await Chapter.find({ bookId: book._id }, 'title slug').sort({ order: 1 })
-    ).map(chapter => chapter.toObject());
+    ).map((chapter) => chapter.toObject());
     return book;
   }
 
@@ -137,7 +137,7 @@ class BookClass {
     });
 
     await Promise.all(
-      mainFolder.data.map(async f => {
+      mainFolder.data.map(async (f) => {
         if (f.type !== 'file') {
           return;
         }
@@ -198,6 +198,10 @@ class BookClass {
       buyerEmail: user.email,
     });
 
+    User.findByIdAndUpdate(user.id, {
+      $addToSet: { purchasedBookIds: book.id },
+    }).exec();
+
     const template = await getEmailTemplate('purchase', {
       userName: user.displayName,
       bookTitle: book.name,
@@ -222,6 +226,15 @@ class BookClass {
       stripeCharge: chargeObj,
       createdAt: new Date(),
     });
+  }
+
+  static async getPurchasedBooks({ purchasedBookIds }) {
+    const purchasedBooks = await this.find({
+      _id: { $in: purchasedBookIds },
+    }).sort({
+      createdAt: -1,
+    });
+    return { purchasedBooks };
   }
 }
 
