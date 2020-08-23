@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import PropTypes from 'prop-types';
@@ -43,7 +44,7 @@ const optionsMenuAdmin = [
   },
 ];
 
-function Header({ user, hideHeader }) {
+function Header({ user, hideHeader, redirectUrl }) {
   return (
     <div
       style={{
@@ -102,7 +103,10 @@ function Header({ user, hideHeader }) {
                 ) : null}
               </div>
             ) : (
-              <Link href="/public/login" as="/login">
+              <Link
+                href={{ pathname: '/public/login', query: { redirectUrl } }}
+                as={{ pathname: '/login', query: { redirectUrl } }}
+              >
                 <a style={{ margin: '0px 20px 0px auto' }}>Log in</a>
               </Link>
             )}

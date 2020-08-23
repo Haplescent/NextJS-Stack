@@ -28,13 +28,11 @@ class BuyButton extends React.Component {
     user: PropTypes.shape({
       _id: PropTypes.string.isRequired,
     }),
-    showModal: PropTypes.bool,
   };
 
   static defaultProps = {
     book: null,
     user: null,
-    showModal: false,
   };
 
   constructor(props) {
@@ -45,13 +43,14 @@ class BuyButton extends React.Component {
     };
   }
 
-  onToken = async token => {
+  onToken = async (token) => {
     NProgress.start();
     const { book } = this.props;
     this.setState({ showModal: false });
 
     try {
       await buyBook({ stripeToken: token, id: book._id });
+      window.location.reload();
       notify('Success!');
       NProgress.done();
     } catch (err) {
@@ -64,7 +63,8 @@ class BuyButton extends React.Component {
     const { user } = this.props;
 
     if (!user) {
-      window.location.href = '/auth/google';
+      const redirectUrl = window.location.pathname;
+      window.location.href = `/auth/google?redirectUrl=${redirectUrl}?buy=1`;
     }
   };
 

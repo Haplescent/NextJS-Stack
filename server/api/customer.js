@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const express = require('express');
 const Book = require('../models/Book');
 const Purchase = require('../models/Purchase');

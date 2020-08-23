@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prettier/prettier */
@@ -13,6 +14,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import throttle from 'lodash/throttle';
 import isEqual from 'lodash/isEqual';
+import { withRouter } from 'next/router';
 import Header from '../../components/Header';
 
 import { getChapterDetail } from '../../lib/api/public';
@@ -31,6 +33,13 @@ class ReadChapter extends React.Component {
     chapter: PropTypes.shape({
       _id: PropTypes.string.isRequired,
     }),
+    user: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }),
+    router: PropTypes.shape({
+      asPath: PropTypes.string.isRequired,
+    }).isRequired,
+    showStripeModal: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -98,7 +107,11 @@ class ReadChapter extends React.Component {
       { headers }
     );
 
-    return { chapter };
+    const showStripeModal = req
+      ? !!req.query.buy
+      : window.location.search.includes('buy=1');
+
+    return { chapter, showStripeModal };
   }
 
   onScroll = throttle(() => {
@@ -169,9 +182,8 @@ class ReadChapter extends React.Component {
   };
 
   renderMainContent() {
-    const { user } = this.props;
-
     const { chapter, htmlContent, showTOC, isMobile } = this.state;
+    const { user, showStripeModal } = this.props;
 
     const { book } = chapter;
 
@@ -193,7 +205,7 @@ class ReadChapter extends React.Component {
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
         {!chapter.isPurchased && !chapter.isFree ? (
-          <BuyButton user={user} book={book} />
+          <BuyButton user={user} book={book} showModal={showStripeModal} />
         ) : null}
       </div>
     );
@@ -209,7 +221,7 @@ class ReadChapter extends React.Component {
 
     return (
       <ul>
-        {sections.map(s => (
+        {sections.map((s) => (
           <li key={s.escapedText} style={{ paddingTop: '10px' }}>
             <a
               style={{
@@ -289,7 +301,7 @@ class ReadChapter extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, router } = this.props;
 
     const { chapter, showTOC, hideHeader, isMobile } = this.state;
 
@@ -315,7 +327,11 @@ class ReadChapter extends React.Component {
           ) : null}
         </Head>
 
-        <Header user={user} hideHeader={hideHeader} />
+        <Header
+          user={user}
+          hideHeader={hideHeader}
+          redirectUrl={router.asPath}
+        />
 
         {this.renderSidebar()}
 
@@ -360,4 +376,6 @@ class ReadChapter extends React.Component {
   }
 }
 
-export default withAuth(ReadChapter, { loginRequired: false });
+export default withAuth(withRouter(ReadChapter), {
+  loginRequired: false,
+});
