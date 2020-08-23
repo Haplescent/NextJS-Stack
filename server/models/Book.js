@@ -7,9 +7,9 @@ const generateSlug = require('../utils/slugify');
 // const Chapter = require('./Chapter');
 const Purchase = require('./Purchase');
 // const User = require('./User');
-const getEmailTemplate = require('./EmailTemplate');
+const { getEmailTemplate } = require('./EmailTemplate');
 
-// const getRootUrl = require('../../lib/api/getRootUrl');
+const getRootUrl = require('../../lib/api/getRootUrl');
 const { stripeCharge } = require('../stripe');
 const sendEmail = require('../aws');
 // const { addToMailchimp } = require('../mailchimp');
@@ -17,7 +17,7 @@ const { getCommits, getContent } = require('../github');
 
 const logger = require('../logs');
 
-// const ROOT_URL = getRootUrl();
+const ROOT_URL = getRootUrl();
 
 const { Schema } = mongoose;
 
@@ -198,11 +198,11 @@ class BookClass {
       buyerEmail: user.email,
     });
 
-    // const template = await getEmailTemplate('purchase', {
-    //   userName: user.displayName,
-    //   bookTitle: book.name,
-    //   bookUrl: `${ROOT_URL}/books/${book.slug}/introduction`,
-    // });
+    const template = await getEmailTemplate('purchase', {
+      userName: user.displayName,
+      bookTitle: book.name,
+      bookUrl: `${ROOT_URL}/books/${book.slug}/introduction`,
+    });
 
     try {
       await sendEmail({

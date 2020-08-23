@@ -15,6 +15,10 @@ const mongoSchema = new Schema({
     type: Number,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
   stripeCharge: {
     id: String,
     amount: Number,
@@ -22,10 +26,6 @@ const mongoSchema = new Schema({
     livemode: Boolean,
     paid: Boolean,
     status: String,
-  },
-  createdAt: {
-    type: Date,
-    required: true,
   },
 });
 

@@ -39,6 +39,24 @@ function insertTemplates() {
         John MErritt
       `,
     },
+    {
+      name: 'purchase',
+      subject: 'You purchased book at The John Merritt App',
+      message: `<%= userName %>,
+        <p>
+          Thank you for purchasing our book! You will get confirmation email from Stripe shortly.
+        </p>
+        <p>
+          Start reading your book: <a href="<%= bookUrl %>" target="_blank"><%= bookTitle %></a>
+        </p>
+        <p>
+          If you have any questions while reading the book,
+          please fill out an issue on
+          <a href="https://github.com/builderbook/builderbook/issues" target="blank">Github</a>.
+        </p>
+        Kelly & Timur, Team Builder Book
+      `,
+    },
   ];
 
   templates.forEach(async template => {
@@ -58,7 +76,7 @@ async function getEmailTemplate(name, params) {
   const source = await EmailTemplate.findOne({ name });
   if (!source) {
     throw new Error(
-      'No EmailTemplates found. Please check that at least one is generated at server startup, restart your server and try again.'
+      'No Email Templates found. Please check that at least one is generated at server startup, restart your server and try again.'
     );
   }
 
