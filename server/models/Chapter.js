@@ -166,6 +166,7 @@ const mongoSchema = new Schema({
 
 class ChapterClass {
   static async getBySlug({ bookSlug, chapterSlug, userId, isAdmin }) {
+    console.log(`is admin is ${isAdmin}`);
     const book = await Book.getBySlug({ slug: bookSlug, userId });
     if (!book) {
       throw new Error('Book not found');
@@ -182,6 +183,7 @@ class ChapterClass {
 
     if (userId) {
       const purchase = await Purchase.findOne({ userId, bookId: book._id });
+      console.log(isAdmin);
 
       chapterObj.isPurchased = !!purchase || isAdmin;
     }
