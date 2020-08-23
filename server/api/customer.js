@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const express = require('express');
 const Book = require('../models/Book');
 const Purchase = require('../models/Purchase');
@@ -65,15 +66,4 @@ router.post('/stripe/fetch-checkout-session', async (req, res) => {
   }
 });
 
-router.post('/buy-book', async (req, res) => {
-  const { id, stripeToken } = req.body;
-
-  try {
-    await Book.buy({ id, stripeToken, user: req.user });
-    res.json({ done: 1 });
-  } catch (err) {
-    logger.error(`error with customer.js post route ${err}`);
-    res.json({ error: err.message || err.toString() });
-  }
-});
 module.exports = router;

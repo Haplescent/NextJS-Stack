@@ -6,13 +6,13 @@ const frontmatter = require('front-matter');
 const generateSlug = require('../utils/slugify');
 // const Chapter = require('./Chapter');
 const Purchase = require('./Purchase');
-// const User = require('./User');
+const User = require('./User');
 const { getEmailTemplate } = require('./EmailTemplate');
 
 const getRootUrl = require('../../lib/api/getRootUrl');
 const { stripeCharge } = require('../stripe');
 const sendEmail = require('../aws');
-// const { addToMailchimp } = require('../mailchimp');
+const { addToMailchimp } = require('../mailchimp');
 const { getCommits, getContent } = require('../github');
 
 const logger = require('../logs');
@@ -66,17 +66,16 @@ class BookClass {
 
     book.chapters = (
       await Chapter.find({ bookId: book._id }, 'title slug').sort({ order: 1 })
-    ).map(chapter => chapter.toObject());
+    ).map((chapter) => chapter.toObject());
+
     return book;
   }
 
   static async add({ name, price, githubRepo }) {
     const slug = await generateSlug(this, name);
-
     if (!slug) {
       throw new Error(`Error with slug generation for name: ${name}`);
     }
-
     return this.create({
       name,
       slug,
@@ -90,10 +89,11 @@ class BookClass {
     const book = await this.findById(id, 'slug name');
 
     if (!book) {
-      throw new Error('Not found');
+      throw new Error('Book is not found by id');
     }
 
     const modifier = { price, githubRepo };
+
     if (name !== book.name) {
       modifier.name = name;
       modifier.slug = await generateSlug(this, name);
@@ -112,7 +112,7 @@ class BookClass {
     const book = await this.findById(id, 'githubRepo githubLastCommitSha');
 
     if (!book) {
-      throw new Error('Not found');
+      throw new Error('Book not found');
     }
 
     const lastCommit = await getCommits({
@@ -122,12 +122,12 @@ class BookClass {
     });
 
     if (!lastCommit || !lastCommit.data || !lastCommit.data[0]) {
-      throw new Error('No change!');
+      throw new Error('No change in content!');
     }
 
     const lastCommitSha = lastCommit.data[0].sha;
     if (lastCommitSha === book.githubLastCommitSha) {
-      throw new Error('No change!');
+      throw new Error('No change in content!');
     }
 
     const mainFolder = await getContent({
@@ -137,7 +137,7 @@ class BookClass {
     });
 
     await Promise.all(
-      mainFolder.data.map(async f => {
+      mainFolder.data.map(async (f) => {
         if (f.type !== 'file') {
           return;
         }
@@ -146,8 +146,6 @@ class BookClass {
           f.path !== 'introduction.md' &&
           !/chapter-([0-9]+)\.md/.test(f.path)
         ) {
-          // not chapter content, skip
-
           return;
         }
 
@@ -172,7 +170,7 @@ class BookClass {
       })
     );
 
-    return book.update({ githubLastCommitSha: lastCommitSha });
+    return book.updateOne({ githubLastCommitSha: lastCommitSha });
   }
 
   static async buy({ id, user, stripeToken }) {
@@ -181,6 +179,7 @@ class BookClass {
     }
 
     const book = await this.findById(id, 'name slug price');
+
     if (!book) {
       throw new Error('Book not found');
     }
@@ -198,6 +197,10 @@ class BookClass {
       buyerEmail: user.email,
     });
 
+    User.findByIdAndUpdate(user.id, {
+      $addToSet: { purchasedBookIds: book.id },
+    }).exec();
+
     const template = await getEmailTemplate('purchase', {
       userName: user.displayName,
       bookTitle: book.name,
@@ -206,7 +209,7 @@ class BookClass {
 
     try {
       await sendEmail({
-        from: `John from The John Merritt app <${process.env.EMAIL_SUPPORT_FROM_ADDRESS}>`,
+        from: `Kelly from builderbook.org <${process.env.EMAIL_SUPPORT_FROM_ADDRESS}>`,
         to: [user.email],
         subject: template.subject,
         body: template.message,
@@ -215,13 +218,28 @@ class BookClass {
       logger.error('Email sending error:', error);
     }
 
+    try {
+      await addToMailchimp({ email: user.email, listName: 'purchased' });
+    } catch (error) {
+      logger.error('Mailchimp error:', error);
+    }
+
     return Purchase.create({
       userId: user._id,
       bookId: book._id,
       amount: book.price * 100,
-      stripeCharge: chargeObj,
       createdAt: new Date(),
+      stripeCharge: chargeObj,
     });
+  }
+
+  static async getPurchasedBooks({ purchasedBookIds }) {
+    const purchasedBooks = await this.find({
+      _id: { $in: purchasedBookIds },
+    }).sort({
+      createdAt: -1,
+    });
+    return { purchasedBooks };
   }
 }
 

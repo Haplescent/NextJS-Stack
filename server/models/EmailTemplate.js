@@ -28,20 +28,21 @@ function insertTemplates() {
   const templates = [
     {
       name: 'welcome',
-      subject: 'Welcome to the John Merritt App',
+      subject: 'Welcome to builderbook.org',
       message: `<%= userName %>,
         <p>
-          Thanks for signing up for John Merritt App!
+          At Builder Book, we are excited to help you build useful, production-ready web apps from scratch.
         </p>
         <p>
-          In our books, we teach you how to build complete, production-ready web apps from scratch.
+          See list of available books here.
         </p>
-        John MErritt
+        Kelly & Timur,
+        Team BB
       `,
     },
     {
       name: 'purchase',
-      subject: 'You purchased book at The John Merritt App',
+      subject: 'You purchased book at builderbook.org',
       message: `<%= userName %>,
         <p>
           Thank you for purchasing our book! You will get confirmation email from Stripe shortly.
@@ -59,12 +60,14 @@ function insertTemplates() {
     },
   ];
 
-  templates.forEach(async template => {
-    if ((await EmailTemplate.find({ name: template.name }).count()) > 0) {
+  templates.forEach(async (template) => {
+    if (
+      (await EmailTemplate.find({ name: template.name }).countDocuments()) > 0
+    ) {
       return;
     }
 
-    EmailTemplate.create(template).catch(error => {
+    EmailTemplate.create(template).catch((error) => {
       logger.error('EmailTemplate insertion error:', error);
     });
   });
@@ -75,9 +78,9 @@ insertTemplates();
 async function getEmailTemplate(name, params) {
   const source = await EmailTemplate.findOne({ name });
   if (!source) {
-    throw new Error(
-      'No Email Templates found. Please check that at least one is generated at server startup, restart your server and try again.'
-    );
+    throw new Error(`No EmailTemplates found.
+      Please check that at least one is generated at server startup,
+      restart your server and try again.`);
   }
 
   return {

@@ -1,5 +1,5 @@
-/* eslint-disable prefer-object-spread */
 /* eslint-disable prettier/prettier */
+/* eslint-disable prefer-object-spread */
 const express = require('express');
 const Book = require('../models/Book');
 const User = require('../models/User');
@@ -17,7 +17,15 @@ router.use((req, res, next) => {
   next();
 });
 
-// not in the book
+router.get('/books', async (req, res) => {
+  try {
+    const books = await Book.list();
+    res.json(books);
+  } catch (err) {
+    res.json({ error: err.message || err.toString() });
+  }
+});
+
 router.post('/books/add', async (req, res) => {
   try {
     const book = await Book.add(
@@ -26,15 +34,6 @@ router.post('/books/add', async (req, res) => {
     res.json(book);
   } catch (err) {
     logger.error(err);
-    res.json({ error: err.message || err.toString() });
-  }
-});
-
-router.get('/books', async (req, res) => {
-  try {
-    const books = await Book.list();
-    res.json(books);
-  } catch (err) {
     res.json({ error: err.message || err.toString() });
   }
 });
@@ -56,6 +55,8 @@ router.get('/books/detail/:slug', async (req, res) => {
     res.json({ error: err.message || err.toString() });
   }
 });
+
+// github-related
 
 router.post('/books/sync-content', async (req, res) => {
   const { bookId } = req.body;
@@ -89,7 +90,7 @@ router.get('/github/repos', async (req, res) => {
   );
 
   if (!user.isGithubConnected || !user.githubAccessToken) {
-    res.json({ error: 'Github is not connected' });
+    res.json({ error: 'Github not connected' });
     return;
   }
 
@@ -101,7 +102,5 @@ router.get('/github/repos', async (req, res) => {
     res.json({ error: err.message || err.toString() });
   }
 });
-
-// more routes
 
 module.exports = router;
