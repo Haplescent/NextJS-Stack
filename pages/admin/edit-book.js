@@ -9,7 +9,7 @@ import NProgress from 'nprogress';
 import PropTypes from 'prop-types';
 import Error from 'next/error';
 
-import EditBookComp from '../../components/admin/EditBook';
+import EditBookComp from '../../components/admin/Editbook';
 import { getBookDetail, editBook } from '../../lib/api/admin';
 import withAuth from '../../lib/withAuth';
 import notify from '../../lib/notifier';
@@ -41,7 +41,7 @@ class EditBook extends React.Component {
     }
   }
 
-  editBookOnSave = async data => {
+  editBookOnSave = async (data) => {
     const { book } = this.state;
     NProgress.start();
 
