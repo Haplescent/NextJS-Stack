@@ -1,6 +1,10 @@
 {
   "name": "8-end",
   "version": "0.0.1",
+  "engines": {
+    "node": "12.14.0",
+    "yarn": "1.22.4"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "nodemon server/app.js --watch server",
