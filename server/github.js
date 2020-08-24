@@ -100,8 +100,9 @@ function getAPI({ accessToken }) {
 
 function getRepos({ accessToken }) {
   const github = getAPI({ accessToken });
+  console.log(github.repos);
 
-  return github.repos.list({ per_page: 100 });
+  return github.repos.listForAuthenticatedUser({ per_page: 100 });
 }
 
 function getContent({ accessToken, repoName, path }) {
