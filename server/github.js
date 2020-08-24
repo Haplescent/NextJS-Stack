@@ -1,7 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable prettier/prettier */
 const qs = require('qs');
 const request = require('request');
-const GithubAPI = require('@octokit/rest');
+const { Octokit } = require('@octokit/rest');
 
 const User = require('./models/User');
 
@@ -89,7 +90,7 @@ function setupGithub({ server }) {
 }
 
 function getAPI({ accessToken }) {
-  const github = new GithubAPI({
+  const github = new Octokit({
     auth: accessToken,
     request: { timeout: 10000 },
   });

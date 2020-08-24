@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const aws = require('aws-sdk');
 
 function sendEmail(options) {

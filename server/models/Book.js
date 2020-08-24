@@ -13,6 +13,7 @@ const getRootUrl = require('../../lib/api/getRootUrl');
 const { stripeCharge } = require('../stripe');
 const sendEmail = require('../aws');
 // const { addToMailchimp } = require('../mailchimp');
+const { subscribe } = require('../mailchimp');
 const { getCommits, getContent } = require('../github');
 
 const logger = require('../logs');
@@ -217,6 +218,12 @@ class BookClass {
       });
     } catch (error) {
       logger.error('Email sending error:', error);
+    }
+
+    try {
+      await subscribe({ email: user.email });
+    } catch (error) {
+      logger.error('Mailchimp error:', error);
     }
 
     return Purchase.create({
