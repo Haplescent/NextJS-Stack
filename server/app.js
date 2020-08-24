@@ -9,6 +9,7 @@ const { insertTemplates } = require('./models/EmailTemplate');
 const { setupGithub } = require('./github');
 const logger = require('./logs');
 const routesWithSlug = require('./routesWithSlug');
+const getRootUrl = require('../lib/api/getRootUrl');
 
 const auth = require('./google');
 
@@ -35,7 +36,11 @@ const options = {
 mongoose.connect(MONGO_URL, options);
 
 const port = process.env.PORT || 8000;
-const ROOT_URL = `http://localhost:${port}`;
+const ROOT_URL = getRootUrl();
+
+console.log(process.env.NODE_ENV);
+console.log(dev);
+console.log(ROOT_URL);
 
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -78,7 +83,7 @@ app.prepare().then(async () => {
     }
   });
 
-  server.listen(port, err => {
+  server.listen(port, (err) => {
     if (err) throw err;
     logger.info(`> Ready on ${ROOT_URL}`);
   });

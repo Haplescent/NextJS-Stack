@@ -19,7 +19,7 @@ function markdownToHtml(content) {
     return `<a target="_blank" href="${href}" rel="noopener noreferrer"${t}>${text}</a>`;
   };
 
-  renderer.image = href => `<img
+  renderer.image = (href) => `<img
     src="${href}"
     style="border: 1px solid #ddd;"
     width="100%"
@@ -166,7 +166,7 @@ const mongoSchema = new Schema({
 
 class ChapterClass {
   static async getBySlug({ bookSlug, chapterSlug, userId, isAdmin }) {
-    console.log(`is admin is ${isAdmin}`);
+    // console.log(`is admin is ${isAdmin}`);
     const book = await Book.getBySlug({ slug: bookSlug, userId });
     if (!book) {
       throw new Error('Book not found');
@@ -183,7 +183,7 @@ class ChapterClass {
 
     if (userId) {
       const purchase = await Purchase.findOne({ userId, bookId: book._id });
-      console.log(isAdmin);
+      // console.log(isAdmin);
 
       chapterObj.isPurchased = !!purchase || isAdmin;
     }
@@ -216,18 +216,18 @@ class ChapterClass {
     let order;
 
     if (path === 'introduction.md') {
-      console.log('adding intro');
+      // console.log('adding intro');
       order = 1;
     } else {
       order = parseInt(path.match(/[0-9]+/), 10) + 1;
-      console.log('adding chapter info');
+      // console.log('adding chapter info');
     }
 
     const content = body;
     const htmlContent = markdownToHtml(content);
     const htmlExcerpt = markdownToHtml(excerpt);
     const sections = getSections(content);
-    console.log(sections);
+    // console.log(sections);
 
     if (!chapter) {
       const slug = await generateSlug(this, title, { bookId: book._id });

@@ -108,7 +108,7 @@ function getContent({ accessToken, repoName, path }) {
   const github = getAPI({ accessToken });
   const [owner, repo] = repoName.split('/');
 
-  return github.repos.getContents({ owner, repo, path });
+  return github.repos.getContent({ owner, repo, path });
 }
 
 function getCommits({ accessToken, repoName, limit }) {
