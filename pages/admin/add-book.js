@@ -5,12 +5,12 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 
 import withAuth from '../../lib/withAuth';
-import EditBook from '../../components/admin/EditBook';
+import EditBook from '../../components/admin/Editbook';
 import { addBook, syncBookContent } from '../../lib/api/admin';
 import notify from '../../lib/notifier';
 
 class AddBook extends React.Component {
-  addBookOnSave = async data => {
+  addBookOnSave = async (data) => {
     NProgress.start();
 
     try {
