@@ -5,11 +5,13 @@ const next = require('next');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoSessionStore = require('connect-mongo');
+const helmet = require('helmet');
 const { insertTemplates } = require('./models/EmailTemplate');
 const { setupGithub } = require('./github');
 const logger = require('./logs');
 const routesWithSlug = require('./routesWithSlug');
 const getRootUrl = require('../lib/api/getRootUrl');
+// const sitemapAndRobots = require('./sitemapAndRobots');
 
 const auth = require('./google');
 
@@ -24,7 +26,7 @@ const URL_MAP = {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const MONGO_URL = process.env.MONGO_URL_TEST;
+const MONGO_URL = dev ? process.env.MONGO_URL_TEST : process.env.MONGO_URL;
 
 const options = {
   useNewUrlParser: true,
@@ -65,6 +67,11 @@ app.prepare().then(async () => {
     },
   };
   server.use(express.json());
+  if (!dev) {
+    server.set('trust proxy', 1);
+    sess.cookie.secure = true;
+    server.use(helmet());
+  }
   server.use(session(sess));
 
   await insertTemplates();
@@ -73,6 +80,7 @@ app.prepare().then(async () => {
   setupGithub({ server });
   api(server);
   routesWithSlug({ server, app });
+  // sitemapAndRobots({ server });
 
   server.get('*', (req, res) => {
     const url = URL_MAP[req.path];

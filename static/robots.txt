@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /books/builder-book/
+Disallow: /admin
