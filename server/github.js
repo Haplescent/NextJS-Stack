@@ -100,7 +100,6 @@ function getAPI({ accessToken }) {
 
 function getRepos({ accessToken }) {
   const github = getAPI({ accessToken });
-  console.log(github.repos);
 
   return github.repos.listForAuthenticatedUser({ per_page: 100 });
 }

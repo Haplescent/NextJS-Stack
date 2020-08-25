@@ -49,6 +49,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-stripe-checkout": "2.6.3",
+    "request": "2.88.0",
     "sitemap": "6.2.0",
     "stripe": "8.89.0",
     "winston": "3.3.3"
