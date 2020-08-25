@@ -5,7 +5,7 @@ const next = require('next');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoSessionStore = require('connect-mongo');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const { insertTemplates } = require('./models/EmailTemplate');
 const { setupGithub } = require('./github');
 const logger = require('./logs');
@@ -70,7 +70,7 @@ app.prepare().then(async () => {
   if (!dev) {
     server.set('trust proxy', 1);
     sess.cookie.secure = true;
-    server.use(helmet());
+    // server.use(helmet());
   }
   server.use(session(sess));
 
