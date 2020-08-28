@@ -1,3 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-indent */
 /* eslint-disable prettier/prettier */
 import PropTypes from 'prop-types';
 import Head from 'next/head';
@@ -23,35 +28,31 @@ const styleTeamMember = {
 const Index = ({ user }) => (
   <div>
     <Head>
-      <title>
-        Open source (MIT License) web app to publish documentation and books
-      </title>
+      <title>SF BMR Guide</title>
       <meta
         name="description"
-        content="Open source web app built with modern JavaScript stack: 
-        React, Material UI, Next, Express, Mongoose, and MongoDB. 
-        Integrated with AWS SES, Github, Google OAuth, Stripe, and MailChimp."
+        content="Buy a below market rate home in San Francisco for as low as $200K."
       />
     </Head>
     <div style={{ padding: '10px 8%', fontSize: '15px' }}>
       <Grid container direction="row" justify="space-around" align="flex-start">
         <Grid item sm={12} xs={12} style={{ textAlign: 'center' }}>
           <br />
-          <h1 style={styleH1}>Open source app</h1>
-          <iframe
-            // eslint-disable-next-line max-len
-            src="https://ghbtns.com/github-btn.html?user=builderbook&repo=builderbook&type=star&count=true&size=large"
-            frameBorder="0"
-            scrolling="0"
-            width="160px"
-            height="30px"
-            title="Builder Book Github"
-          />
+          <h1 style={styleH1}>
+            Buy a below market rate home in San Francisco for as low as $200K
+          </h1>
           <p>
-            Open source web app (MIT License) to publish documentation and
-            books.
+            The SF-BMR Ownership Program helps first time homebuyers who
             <br />
-            Built with React, Material-UI, Next, Express, Mongoose, and MongoDB.
+            are low, moderate, and middle-income. BMR homes are specified units
+            <br />
+            in San Francisco sold at below market rate prices. As I have
+            <br />
+            purchased a BMR home, I have learned the benefits and
+            <br />
+            challenges of going through this program. My book is a
+            <br />
+            updated guide to finding an affordable home in San Francisco.
           </p>
           <p style={{ textAlign: 'center' }}>
             <Link
@@ -63,238 +64,159 @@ const Index = ({ user }) => (
                 color="primary"
                 style={styleRaisedButton}
               >
-                Live App
+                Read the book
               </Button>
             </Link>
-            <a
-              href="https://github.com/builderbook/builderbook"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                variant="contained"
-                color="secondary"
-                style={styleRaisedButton}
-              >
-                Github
-              </Button>
-            </a>
           </p>
         </Grid>
       </Grid>
 
-      <h1 style={styleH1}>How can you use this app?</h1>
+      <h1 style={styleH1}>How this book can help?</h1>
       <Grid container direction="row" justify="space-around" align="flex-start">
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> As learning material </b>
+            <b> A step-by-step guide through the SF BMR program </b>
           </p>
           <p>
             {' '}
-            Start with our
+            While the
             <a
-              href="https://github.com/builderbook/builderbook/tree/master/boilerplate"
+              href="https://sfmohcd.org/bmr-ownership"
               target="_blank"
               rel="noopener noreferrer"
             >
               {' '}
-              boilerplate
+              SF-BMR website
             </a>
-            &nbsp;or clone the entire project. Customize the code to build your
-            own web app.
+            &nbsp;covers some key eligiblity requirements to qualify for the
+            program, this book goes beyond and gives a comprehensive
+            step-by-step guide not found on the website. From going to your
+            first first-time homebuyers seminar, to winning the lottery, to
+            closing on your first home, this book covers the full procress of
+            buying your first home in San Francisco.
           </p>
         </Grid>
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> To publish documentation or a book </b>
+            <b> Common pitfalls to avoid and hidden programs that can help </b>
           </p>
           <p>
-            Write documentation and books in Markdown. Write with your favorite
-            code editor and sync content using Github.
+            {' '}
+            The SF-BMR program exists between many parties, including the
+            <a
+              href="https://sf.gov/departments/mayors-office-housing-and-community-development"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {' '}
+              Mayor's Office of Housing and Community Development
+            </a>
+            , the
+            <a
+              href="https://sfhdc.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {' '}
+              San Francisco Housing Development Corporation
+            </a>
+            , and
+            <a
+              href="http://www.myhomegateway.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {' '}
+              My Home Gateway
+            </a>
+            . Many applicants fail to meet deadlines and eligibility in all of
+            these programs. This book covers each program when you need them and
+            the hidden benefits they can offer.
           </p>
         </Grid>
       </Grid>
 
       <br />
 
-      <h1 style={styleH1}>Features</h1>
+      <h1 style={styleH1}>
+        Finding the right people, the right time, and the right home
+      </h1>
       <Grid container direction="row" justify="space-around" align="flex-start">
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> Modern JavaScript stack </b>
+            <b> Contact the right people </b>
           </p>
           <p>
-            Be productive and ship fast with React.js, Material-UI, Next.js,
-            Express.js, Mongoose, MongoDB. We keep the app
-            <a
-              href="https://github.com/builderbook/builderbook/blob/master/package.json"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              &nbsp;dependencies&nbsp;
-            </a>
-            up-to-date.
+            This book includes updated contact information of mortgage brokers
+            and counselors. Having the right people can make of break your BMR
+            application.
           </p>
         </Grid>
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> Popular third party APIs </b>
+            <b> Sooner, not later </b>
           </p>
           <p>
-            Google for user authentication, Github for markdown and
-            collaboration, AWS SES for transactional emails, MailChimp for
-            newsletters, Stripe for selling.
+            The best time to buy a home in San Francisco was 20 years ago, the
+            second best time is now. The third best time is later. But
+            regardless, it’s the only time we've got.
           </p>
         </Grid>
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> Blazing fast </b>
+            <b> Not all BMR homes are created equal </b>
           </p>
           <p>
-            Best of both worlds: the initial page load is server-side rendered
-            and all subsequent loads are client-side rendered. Some pages are
-            prefetched in the background.
+            While most only look at the square-footage, the neighborhood and the
+            commute, this guide goes further. We talk about getting lottery
+            preferences, BMR homes that are in large development projects, and
+            what the ideal BMR home looks like.
           </p>
         </Grid>
         <Grid item sm={6} xs={12} style={styleHomepageFeature}>
           <p>
-            <b> Deploy in under 60 seconds </b>
+            <b> Below market rate homes are still competitive </b>
           </p>
-          <p>
-            We use this app to write, host, and sell
-            <a
-              href="https://builderbook.org/books/builder-book/introduction"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {' '}
-              our book
-            </a>
-            . You are welcome to use this app as a boilerplate.
-            <a
-              href="https://github.com/builderbook/builderbook#deploy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {' '}
-              Deploy
-            </a>
-            &nbsp;it to your own domain in under 60 seconds using
-            <a
-              href="https://zeit.co/now"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {' '}
-              Now
-            </a>
-            .
-          </p>
+          In is common for a 1 bedroom condo, priced at $350,000, to have as
+          many as 150+ applicants. Only one will win lottery and go on to
+          purchase the home. The BMR applicantion is a number's game, but there
+          are ways to get higher on the lottery preference to increase the odds.
+          <p />
         </Grid>
       </Grid>
 
       <br />
 
-      <h1 style={styleH1}>The Team</h1>
+      <h1 style={styleH1}>About the Author</h1>
       <div style={{ textAlign: 'center' }}>
-        Together, we&apos;ve built
-        <a
-          href="https://github.com/builderbook/builderbook"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {' '}
-          Builder Book
-        </a>
-        &nbsp;and
-        <a
-          href="https://findharbor.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          &nbsp;Harbor
-        </a>
-        . Stay tuned for
-        <a
-          href="https://github.com/async-labs/async-saas"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {' '}
-          Async
-        </a>
-        .
+        A SF-BMR homeowner, I wrote this book to help people get their first
+        home
       </div>
       <br />
       <Grid container direction="row" justify="space-around" align="flex-start">
         <Grid item sm={4} xs={12} style={styleTeamMember}>
           <Avatar
-            src="https://storage.googleapis.com/builderbook/timur-picture.png"
+            src="https://avatars0.githubusercontent.com/u/13133436?s=400&u=e596f9c987157285eb55e835e6a23622515b1985&v=4"
             style={styleBigAvatar}
-            alt="Timur Zhiyentayev"
+            alt="John Merritt"
           />
           <p>
             <a
-              href="https://github.com/tima101"
+              href="https://radiant-dawn-48704.herokuapp.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Timur Zhiyentayev
+              John Merritt
             </a>
             <br />
-            Vancouver, WA
+            San Francisco, CA
           </p>
           <p>
-            Tima is a JavaScript web developer. He likes learning any technology
-            that improves end-user experience.
-          </p>
-        </Grid>
-        <Grid item sm={4} xs={12} style={styleTeamMember}>
-          <Avatar
-            src="https://storage.googleapis.com/builderbook/kelly-picture.png"
-            style={styleBigAvatar}
-            alt="Kelly Burke"
-          />
-          <p>
-            <a
-              href="https://github.com/klyburke"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Kelly Burke
-            </a>
-            <br />
-            Vancouver, WA
-          </p>
-          <p>
-            Kelly is a front-end developer. She likes using React, Material
-            Design, and VS editor and enjoys solving UX problems.
-          </p>
-        </Grid>
-        <Grid item sm={4} xs={12} style={styleTeamMember}>
-          <Avatar
-            src="https://storage.googleapis.com/builderbook/delgermurun-picture.png"
-            style={styleBigAvatar}
-            alt="Delgermurun Purevkhuu"
-          />
-          <p>
-            <a
-              href="https://github.com/delgermurun"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Delgermurun Purevkhuu
-            </a>
-            <br />
-            Ulaanbaatar, Mongolia
-          </p>
-          <p>
-            Del is a back-end developer. He has built many production-ready web
-            apps with JavaScript and Python.
+            John is a Scientist, JavaScript Web Developer, and SF-BMR homeowner.
+            He enjoys acting, piano, and all things related to San Francisco.
           </p>
         </Grid>
       </Grid>
-
       <br />
     </div>
     <Footer />

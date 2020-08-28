@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 
@@ -13,10 +14,10 @@ function Footer() {
           justify="space-around"
           alignItems="center"
         >
-          <span>{`© ${new Date().getFullYear()} Builder Book`}</span>
+          <span>{`© ${new Date().getFullYear()} John Merritt`}</span>
           <a
             style={{ padding: '0px 20px' }}
-            href="https://github.com/builderbook"
+            href="https://github.com/Haplescent/NextJS-Stack"
             target="_blank"
             rel="noopener noreferrer"
           >

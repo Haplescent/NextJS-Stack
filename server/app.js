@@ -53,7 +53,7 @@ app.prepare().then(async () => {
   const MongoStore = mongoSessionStore(session);
 
   const sess = {
-    name: 'builderbook.sid',
+    name: 'sfbmr.sid',
     secret: 'HD2w.)q*VqRT4/#NK2M/,E^B)}FED5fWU!dKe[wk',
     store: new MongoStore({
       mongooseConnection: mongoose.connection,

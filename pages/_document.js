@@ -4,7 +4,7 @@
 import React from 'react';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
-import htmlescape from 'htmlescape'
+import htmlescape from 'htmlescape';
 
 const { StripePublishableKey } = process.env;
 // console.log(StripePublishableKey);
@@ -28,7 +28,7 @@ class MyDocument extends Document {
 
           <link
             rel="shortcut icon"
-            href="https://storage.googleapis.com/builderbook/favicon32.png"
+            href="../static/97d8f2ea-943b-4448-a341-090af23762c5_200x200.png"
           />
           <link
             rel="stylesheet"
@@ -103,7 +103,7 @@ class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async (ctx) => {
   // Resolution order
   //
   // On the server:
@@ -132,7 +132,7 @@ MyDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />),
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 
   const initialProps = await Document.getInitialProps(ctx);

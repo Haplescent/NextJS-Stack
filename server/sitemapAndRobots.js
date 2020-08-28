@@ -11,7 +11,7 @@ function setup({ server }) {
   Chapter.find({}, 'slug').then((chapters) => {
     chapters.forEach((chapter) => {
       sitemap.add({
-        url: `/books/builder-book/${chapter.slug}`,
+        url: `/books/demo-book/${chapter.slug}`,
         changefreq: 'daily',
         priority: 1,
       });

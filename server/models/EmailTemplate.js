@@ -41,10 +41,10 @@ function insertTemplates() {
     },
     {
       name: 'purchase',
-      subject: 'You purchased book at The John Merritt App',
+      subject: 'You purchased the SF-BMR guide',
       message: `<%= userName %>,
         <p>
-          Thank you for purchasing our book! You will get confirmation email from Stripe shortly.
+          Thank you for purchasing my book! You will get confirmation email from Stripe shortly.
         </p>
         <p>
           Start reading your book: <a href="<%= bookUrl %>" target="_blank"><%= bookTitle %></a>
@@ -52,19 +52,19 @@ function insertTemplates() {
         <p>
           If you have any questions while reading the book,
           please fill out an issue on
-          <a href="https://github.com/builderbook/builderbook/issues" target="blank">Github</a>.
+          <a href="https://github.com/Haplescent/NextJS-Stack/issues" target="blank">Github</a>.
         </p>
-        Kelly & Timur, Team Builder Book
+        John Merritt, Author or SF-BMR guide
       `,
     },
   ];
 
-  templates.forEach(async template => {
+  templates.forEach(async (template) => {
     if ((await EmailTemplate.find({ name: template.name }).count()) > 0) {
       return;
     }
 
-    EmailTemplate.create(template).catch(error => {
+    EmailTemplate.create(template).catch((error) => {
       logger.error('EmailTemplate insertion error:', error);
     });
   });

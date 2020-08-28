@@ -63,15 +63,13 @@ function Header({ user, hideHeader, redirectUrl }) {
           alignItems="center"
         >
           <Grid item sm={9} xs={8} style={{ textAlign: 'left' }}>
-            {!user ? (
-              <Link href="/">
-                <Avatar
-                  src="https://storage.googleapis.com/builderbook/logo.svg"
-                  alt="Builder Book logo"
-                  style={{ margin: '0px auto 0px 20px', cursor: 'pointer' }}
-                />
-              </Link>
-            ) : null}
+            <Link href="/">
+              <Avatar
+                src="../../static/97d8f2ea-943b-4448-a341-090af23762c5_200x200.png"
+                alt="SF-BMR logo"
+                style={{ margin: '0px auto 0px 20px', cursor: 'pointer' }}
+              />
+            </Link>
           </Grid>
           <Grid item sm={2} xs={2} style={{ textAlign: 'right' }}>
             {user && user.isAdmin && !user.isGithubConnected ? (

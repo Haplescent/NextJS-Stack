@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 
 import withAuth from '../../lib/withAuth';
 import { styleLoginButton } from '../../components/SharedStyles';
+import Footer from '../../components/Footer';
 
 function Login({ router }) {
   const redirectUrl =
@@ -14,8 +15,8 @@ function Login({ router }) {
   return (
     <div style={{ textAlign: 'center', margin: '0 20px' }}>
       <Head>
-        <title>Log in to Builder Book</title>
-        <meta name="description" content="Login page for builderbook.org" />
+        <title>Log in to SF-BMR Book</title>
+        <meta name="description" content="Login page for the SF-BMR guide" />
       </Head>
       <br />
       <p style={{ margin: '45px auto', fontSize: '44px', fontWeight: '400' }}>
@@ -35,6 +36,10 @@ function Login({ router }) {
         />
         Log in with Google
       </Button>
+      <br />
+      <br />
+      <br />
+      <Footer />
     </div>
   );
 }

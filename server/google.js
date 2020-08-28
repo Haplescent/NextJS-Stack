@@ -82,7 +82,7 @@ function auth({ ROOT_URL, server }) {
       } else if (req.session.finalUrl) {
         res.redirect(req.session.finalUrl);
       } else {
-        res.redirect('/my-books');
+        res.redirect('/');
       }
     }
   );

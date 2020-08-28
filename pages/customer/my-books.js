@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Head from 'next/head';
+import Footer from '../../components/Footer';
 
 import { getMyBookList } from '../../lib/api/customer';
 import withAuth from '../../lib/withAuth';
@@ -68,6 +69,7 @@ class MyBooks extends React.Component {
             </div>
           )}
         </div>
+        <Footer />
       </div>
     );
   }

@@ -13,7 +13,8 @@ function stripeCharge({ amount, token, buyerEmail }) {
     source: token,
     receipt_email: buyerEmail,
     currency: 'usd',
-    description: 'Payment for the book at builderbook.org',
+    description:
+      'Payment for the SF-BMR guide at https://johnmerritt95book.herokuapp.com',
   });
 }
 
