@@ -42,17 +42,12 @@ const Index = ({ user }) => (
             Buy a below market rate home in San Francisco for as low as $200K
           </h1>
           <p>
-            The SF-BMR Ownership Program helps first time homebuyers who
-            <br />
-            are low, moderate, and middle-income. BMR homes are specified units
-            <br />
-            in San Francisco sold at below market rate prices. As I have
-            <br />
-            purchased a BMR home, I have learned the benefits and
-            <br />
-            challenges of going through this program. My book is a
-            <br />
-            updated guide to finding an affordable home in San Francisco.
+            The SF-BMR Ownership Program helps first time homebuyers who are
+            low, moderate, and middle-income. BMR homes are specified units in
+            San Francisco sold at below market rate prices. As I have purchased
+            a BMR home, I have learned the benefits and challenges of going
+            through this program. My book is a updated guide to finding an
+            affordable home in San Francisco.
           </p>
           <p style={{ textAlign: 'center' }}>
             <Link
@@ -178,7 +173,7 @@ const Index = ({ user }) => (
             <b> Below market rate homes are still competitive </b>
           </p>
           In is common for a 1 bedroom condo, priced at $350,000, to have as
-          many as 150+ applicants. Only one will win lottery and go on to
+          many as 150+ applicants. Only one will win the lottery and go on to
           purchase the home. The BMR applicantion is a number's game, but there
           are ways to get higher on the lottery preference to increase the odds.
           <p />
