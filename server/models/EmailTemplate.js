@@ -28,15 +28,16 @@ function insertTemplates() {
   const templates = [
     {
       name: 'welcome',
-      subject: 'Welcome to the John Merritt App',
+      subject: 'Welcome to the SF-BMR',
       message: `<%= userName %>,
         <p>
-          Thanks for signing up for John Merritt App!
+          Thanks for signing up for the SF-BMR book!
         </p>
         <p>
-          In our books, we teach you how to build complete, production-ready web apps from scratch.
+          In our books, we teach you how to buy a below market rate home in San Francisco for as low as $200K
+
         </p>
-        John MErritt
+        John Merritt
       `,
     },
     {
