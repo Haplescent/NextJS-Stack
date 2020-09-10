@@ -73,7 +73,7 @@ app.prepare().then(async () => {
     // server.use(helmet());
   }
   server.use(session(sess));
-  // insert email templates into mongoDB only if there are not there
+
   await insertTemplates();
 
   auth({ server, ROOT_URL });
