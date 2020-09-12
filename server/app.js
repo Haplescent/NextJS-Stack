@@ -54,7 +54,7 @@ app.prepare().then(async () => {
 
   const sess = {
     name: 'sfbmr.sid',
-    secret: 'HD2w.)q*VqRT4/#NK2M/,E^B)}FED5fWU!dKe[wk',
+    secret: process.env.Session_Secret,
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
       ttl: 14 * 24 * 60 * 60, // save session 14 days
